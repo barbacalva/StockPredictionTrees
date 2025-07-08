@@ -3,3 +3,5 @@ yfinance
 numpy
 pandas
 python-dotenv
+pyarrow
+fastparquet
