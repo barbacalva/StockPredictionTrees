@@ -5,7 +5,7 @@ yfinance (only 60 d). As a last resource, it searches for an existing CSV.
 
 Usage
 ----
-$ python -m src.data.download_intraday \
+$ python -m src.data.download_data \
     --symbol SPY --start 2022-01-01 --end 2025-07-04 --dest data/raw/
 """
 
@@ -95,6 +95,7 @@ class IntradayDownloader:
         data = data.assign(timestamp=pd.to_datetime(data["timestamp"]))
         data = data.set_index("timestamp")
         data.index = data.index.tz_localize("US/Eastern")
+        data.index = data.index.tz_convert("UTC")
         data = data.sort_index()
         data = data.loc[self.start:self.end]
         return data
@@ -139,7 +140,7 @@ class IntradayDownloader:
         p.add_argument("--symbol", required=True)
         p.add_argument("--start", type=lambda s: datetime.fromisoformat(s), required=True)
         p.add_argument("--end", type=lambda s: datetime.fromisoformat(s), required=True)
-        p.add_argument("--dest", type=Path, default=Path("../../data/raw"))
+        p.add_argument("--dest", type=Path, default=Path("data/raw"))
         args = p.parse_args()
 
         logging.basicConfig(
