@@ -95,6 +95,10 @@ def cli():
 
     df_raw = pd.read_csv(args.csv, parse_dates=["timestamp"], index_col="timestamp")
     df_clean = clean(df_raw, args.start, args.end)
+    prices_out = args.out.with_name(args.csv.stem + "_prices.parquet")
+    df_clean.to_parquet(prices_out, compression="snappy")
+    _LOG.info("Saved cleaned prices → %s", prices_out)
+
     feats = engineer(df_clean)
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
