@@ -5,3 +5,5 @@ pandas
 python-dotenv
 pyarrow
 fastparquet
+scikit-learn
+xgboost
